@@ -2,23 +2,30 @@
   <div class="home">
     <v-list
       flat
+      class="pt-0"
     >
-
-        <v-list-item v-for="task in tasks" :key="task.id">
-          <template v-slot:default="{ active, }">
+   <div v-for="task in tasks" :key="task.id">
+    <v-list-item
+    @click="doneTask(task.id)"
+    :class=" {'blue' : task.done} " 
+    >
+          <template v-slot:default>
             <v-list-item-action>
               <v-checkbox
-                :input-value="active"
+                :input-value="task.done"
                 color="primary"
               ></v-checkbox>
             </v-list-item-action>
 
             <v-list-item-content>
-              <v-list-item-title>{{task.title}}</v-list-item-title>
+              <v-list-item-title
+              :class="{ 'text-decoration-line-through' : task.done }"
+              >{{task.title}}</v-list-item-title>
             </v-list-item-content>
           </template>
         </v-list-item>
-
+        <v-divider></v-divider>
+   </div>
     </v-list>
   </div>
 </template>
@@ -30,17 +37,26 @@
         tasks: [
           {
             id: 1,
-            title: "Play League"
+            title: "Play League",
+            done: false,
           },
           {
             id: 2,
-            title: "Play Ruined King"
+            title: "Play Ruined King",
+            done: false,
           },
           {
             id: 3,
-            title: "Work on Portfolio"
+            title: "Work on Portfolio",
+            done: false,
           }
         ]
+      }
+    },
+    methods: {
+      doneTask(id) {
+        let task = this.tasks.filter( task => task.id === id)[0]
+        task.done = !task.done 
       }
     }
   }
